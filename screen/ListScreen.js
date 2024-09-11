@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { db } from './firebase';
+import { db } from '../functions/firebase';
 import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 
 const ListScreen = ({ route }) => {

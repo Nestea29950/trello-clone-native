@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { collection, addDoc, getDocs, query, deleteDoc, doc } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from '../functions/firebase';
 
 const BoardsScreen = ({ navigation }) => {
   const [boards, setBoards] = useState([]);

@@ -1,18 +1,18 @@
-// SignupScreen.js
+// LoginScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { auth } from './firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../functions/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const SignupScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignup = () => {
-    createUserWithEmailAndPassword(auth, email, password)
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // User created
-        navigation.navigate('Login');
+        // Logged in
+        navigation.navigate('Home');
       })
       .catch((error) => {
         console.log(error);
@@ -22,7 +22,7 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Sign Up</Text>
+      <Text>Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -36,7 +36,8 @@ const SignupScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Sign Up" onPress={handleSignup} />
+      <Button title="Login" onPress={handleLogin} />
+      <Button title="Create Account" onPress={() => navigation.navigate('Signup')} />
     </View>
   );
 };
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   input: {
-    margin: 10,
     height: 40,
     borderColor: '#ddd',
     borderWidth: 1,
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+export default LoginScreen;

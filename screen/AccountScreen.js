@@ -1,7 +1,7 @@
 // AccountScreen.js
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, Switch } from 'react-native';
-import { auth } from './firebase'; // Assurez-vous d'importer firebase auth
+import { auth } from '../functions/firebase'; // Assurez-vous d'importer firebase auth
 
 const AccountScreen = ({ navigation }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
