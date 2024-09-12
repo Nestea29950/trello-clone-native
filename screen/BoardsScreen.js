@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { collection, addDoc, getDocs, query, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../functions/firebase';
 
 const BoardsScreen = ({ navigation }) => {
   const [boards, setBoards] = useState([]);
   const [newBoardName, setNewBoardName] = useState('');
-  const [cardInputs, setCardInputs] = useState({}); // Stocke les champs d'entrée des cartes pour chaque tableau
+  const [cardInputs, setCardInputs] = useState({});
 
   useEffect(() => {
     fetchBoards();
@@ -19,12 +19,9 @@ const BoardsScreen = ({ navigation }) => {
       const boardsData = await Promise.all(
         querySnapshot.docs.map(async doc => {
           const boardData = { id: doc.id, ...doc.data() };
-          
-          // Récupère les cartes pour chaque tableau
           const cardsQuery = query(collection(db, 'boards', doc.id, 'cards'));
           const cardsSnapshot = await getDocs(cardsQuery);
           const cardsData = cardsSnapshot.docs.map(cardDoc => ({ id: cardDoc.id, ...cardDoc.data() }));
-          
           return {
             ...boardData,
             cards: cardsData,
@@ -43,7 +40,6 @@ const BoardsScreen = ({ navigation }) => {
       alert('Board name cannot be empty');
       return;
     }
-
     try {
       await addDoc(collection(db, 'boards'), { name: newBoardName });
       setNewBoardName('');
@@ -60,7 +56,6 @@ const BoardsScreen = ({ navigation }) => {
       alert('Card name cannot be empty');
       return;
     }
-
     try {
       const boardRef = doc(db, 'boards', boardId);
       await addDoc(collection(boardRef, 'cards'), { name: cardName });
@@ -101,87 +96,133 @@ const BoardsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Nouveau board"
-        value={newBoardName}
-        onChangeText={setNewBoardName}
-      />
-      <Button title="Add Board" onPress={handleAddBoard} />
+    <ImageBackground
+      style={styles.background}
+      source={{ uri: 'https://www.toptal.com/designers/subtlepatterns/patterns/dot-grid.png' }}
+    >
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nouveau board"
+          value={newBoardName}
+          onChangeText={setNewBoardName}
+        />
+        <TouchableOpacity style={styles.addButton} onPress={handleAddBoard}>
+          <Text style={styles.addButtonText}>Add Board</Text>
+        </TouchableOpacity>
 
-      <FlatList
-        data={boards}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.boardContainer}>
-            <TouchableOpacity onPress={() => handleBoardPress(item.id)}>
-              <Text style={styles.boardName}>{item.name}</Text>
-            </TouchableOpacity>
+        <FlatList
+          data={boards}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.boardContainer}>
+              <TouchableOpacity onPress={() => handleBoardPress(item.id)}>
+                <Text style={styles.boardName}>{item.name}</Text>
+              </TouchableOpacity>
 
-            {/* Affichage des cartes associées au tableau */}
-            <FlatList
-              data={item.cards}
-              keyExtractor={card => card.id}
-              renderItem={({ item: card }) => (
-                <View style={styles.cardContainer}>
-                  <Text style={styles.cardName}>{card.name}</Text>
-                  <Button
-                    title="Delete Card"
-                    onPress={() => handleDeleteCard(item.id, card.id)}
-                    color="red"
-                  />
-                </View>
-              )}
-            />
+              <FlatList
+                data={item.cards}
+                keyExtractor={card => card.id}
+                renderItem={({ item: card }) => (
+                  <View style={styles.cardContainer}>
+                    <Text style={styles.cardName}>{card.name}</Text>
+                    <TouchableOpacity onPress={() => handleDeleteCard(item.id, card.id)}>
+                      <Text style={styles.deleteText}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
 
-            <TextInput
-              style={styles.input}
-              placeholder="New Card"
-              value={cardInputs[item.id] || ''}
-              onChangeText={text => handleCardInputChange(item.id, text)}
-            />
-            <Button title="Add Card" onPress={() => handleAddCard(item.id)} />
-            <Button title="Delete Board" onPress={() => handleDeleteBoard(item.id)} color="red" />
-          </View>
-        )}
-      />
-    </View>
+              <TextInput
+                style={styles.input}
+                placeholder="New Card"
+                value={cardInputs[item.id] || ''}
+                onChangeText={text => handleCardInputChange(item.id, text)}
+              />
+              <TouchableOpacity style={styles.addButton} onPress={() => handleAddCard(item.id)}>
+                <Text style={styles.addButtonText}>Add Card</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteBoard(item.id)}>
+                <Text style={styles.deleteButtonText}>Delete Board</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
+    width: '90%',
     padding: 16,
   },
   input: {
     height: 40,
-    borderColor: '#ddd',
+    borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#f7f7f7',
+  },
+  addButton: {
+    backgroundColor: '#0079bf',
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   boardContainer: {
     marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#f4f4f4',
-    borderRadius: 5,
+    padding: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    elevation: 3,
   },
   boardName: {
     fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#0079bf',
   },
   cardContainer: {
-    marginVertical: 5,
-    padding: 10,
-    backgroundColor: '#e4e4e4',
-    borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#e4e4e4',
+    padding: 10,
+    borderRadius: 8,
+    marginVertical: 5,
   },
   cardName: {
     fontSize: 16,
+  },
+  deleteText: {
+    color: 'red',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
