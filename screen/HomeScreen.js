@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome to TrelloClone!</Text>
+      <Text style={styles.header}>Bienvenue sur trello!</Text>
       <Button title="Logout" onPress={handleLogout} />
     </View>
   );

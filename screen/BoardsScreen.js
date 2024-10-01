@@ -108,7 +108,7 @@ const BoardsScreen = ({ navigation }) => {
           onChangeText={setNewBoardName}
         />
         <TouchableOpacity style={styles.addButton} onPress={handleAddBoard}>
-          <Text style={styles.addButtonText}>Add Board</Text>
+          <Text style={styles.addButtonText}>Ajouter un Board</Text>
         </TouchableOpacity>
 
         <FlatList
@@ -127,7 +127,7 @@ const BoardsScreen = ({ navigation }) => {
                   <View style={styles.cardContainer}>
                     <Text style={styles.cardName}>{card.name}</Text>
                     <TouchableOpacity onPress={() => handleDeleteCard(item.id, card.id)}>
-                      <Text style={styles.deleteText}>Delete</Text>
+                      <Text style={styles.deleteText}>Supprimer</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -135,15 +135,15 @@ const BoardsScreen = ({ navigation }) => {
 
               <TextInput
                 style={styles.input}
-                placeholder="New Card"
+                placeholder="Nouvelle Card"
                 value={cardInputs[item.id] || ''}
                 onChangeText={text => handleCardInputChange(item.id, text)}
               />
               <TouchableOpacity style={styles.addButton} onPress={() => handleAddCard(item.id)}>
-                <Text style={styles.addButtonText}>Add Card</Text>
+                <Text style={styles.addButtonText}>Ajouter une card</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteBoard(item.id)}>
-                <Text style={styles.deleteButtonText}>Delete Board</Text>
+                <Text style={styles.deleteButtonText}>Supprimer le Board</Text>
               </TouchableOpacity>
             </View>
           )}

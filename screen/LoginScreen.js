@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
       source={{ uri: 'https://www.toptal.com/designers/subtlepatterns/patterns/dot-grid.png' }} // Un fond subtil, peut être remplacé par un dégradé
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
+        <Text style={styles.title}>Se connecter</Text>
         
         <TextInput
           style={styles.input}
@@ -42,11 +42,11 @@ const LoginScreen = ({ navigation }) => {
         />
 
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login</Text>
+          <Text style={styles.loginButtonText}>Se connecter</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.signupButton} onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupButtonText}>Create Account</Text>
+          <Text style={styles.signupButtonText}>Créer un compte</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

@@ -25,7 +25,7 @@ const SignupScreen = ({ navigation }) => {
       source={{ uri: 'https://www.toptal.com/designers/subtlepatterns/patterns/dot-grid.png' }} // Fond subtil
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Sign Up</Text>
+        <Text style={styles.title}>Créer un compte</Text>
 
         <TextInput
           style={styles.input}
@@ -36,18 +36,18 @@ const SignupScreen = ({ navigation }) => {
         
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Mot de passe"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
 
         <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-          <Text style={styles.signupButtonText}>Sign Up</Text>
+          <Text style={styles.signupButtonText}>Créer un compte !</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.loginButtonText}>Already have an account? Login</Text>
+          <Text style={styles.loginButtonText}>Tu as déja un compte ? Connecte toi !</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
